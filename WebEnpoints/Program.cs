@@ -24,6 +24,11 @@ app.MapGet("/api/course/{id:int}", async (HttpContext context, int id) =>
             else
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
         });
+app.MapGet("/api/course/{search}", async (HttpContext context, string search) =>
+{
+    var c = Course.All.Where(c => c.Title.Contains(search, StringComparison.OrdinalIgnoreCase));
+    await context.Response.WriteAsJsonAsync(c);
+});
 app.MapDelete("/api/course/{id:int}", async (HttpContext context, int id) =>
 {
     Course c = Course.All.Where(c => c.Id == id).SingleOrDefault();
