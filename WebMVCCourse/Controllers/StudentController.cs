@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebMVCCourse.Filters;
 using WebMVCCourse.Models;
 
 namespace WebMVCCourse.Controllers
@@ -20,7 +21,20 @@ namespace WebMVCCourse.Controllers
             return View("Index", Student.All.Where(s => s.Age >=minAge));
         }
 
-        // GET: StudentController/Details/5
+        [MyActionFilter] // action filter
+        [Route("age/{minAge:int}/{maxAge:int}")]  // person/age/20/30
+        public IActionResult ByAge(int minAge, int maxAge)
+        {
+            return View("Index", Student.All.Where(s => s.Age >= minAge && s.Age <= maxAge));
+        }
+
+        [Route("search/{search}")]
+        public IActionResult Search(string search)
+        {
+            return View("Index", Student.All.Where(c => c.Name.Contains(search, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        // GET: Student/Details/5
         public ActionResult Details(int id)
         {
             var student = Student.All.Where(s=>s.Id == id).SingleOrDefault();
@@ -35,11 +49,20 @@ namespace WebMVCCourse.Controllers
             return View();
         }
 
+        // Источники данных для Model Binding
+        // URL (URI) GET : student/create?name=Sergey&age=34  // query path this.HttpContext.Request.Query
+        // forms data (request body, POST) : name=Sergey&age=34 // this.HttpContext.Request.Form
+        // Routed Data: "age/{minAge:int}/{maxAge:int}" // this.RouteData
+        // <input type=file> File
+
+
+
         // POST: StudentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Student student)
         {
+            
             try
             {
                 Student.All.Add(student);

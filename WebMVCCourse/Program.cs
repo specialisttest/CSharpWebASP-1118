@@ -1,4 +1,13 @@
+using Microsoft.Extensions.FileProviders;
+using WebMVCCourse.Filters;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// add global filter
+
+builder.Services.AddMvc(options => {
+    options.Filters.Add(typeof(CustomHeaderResultFilterAttribute));
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -13,6 +22,15 @@ if (!app.Environment.IsDevelopment())
 app.UseRouting();
 
 app.UseAuthorization();
+
+/*app.UseStaticFiles(); // wwwroot
+
+// MyStatic
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "MyStatic"))
+});*/
 
 app.MapStaticAssets(); // app.UseStaticFiles();
 

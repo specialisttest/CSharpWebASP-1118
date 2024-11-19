@@ -1,4 +1,27 @@
 ﻿@{
-    Layout = null;
+    //Layout = null;
+    var x = 1;
 }
 <h1>Abc action</h1>
+@if (x > 1)
+{
+    <h2>2 * 2 = @(x * x) </h2>
+}
+else
+{
+    <h3>
+        2 * 2 = @(x * x)
+    </h3>
+}
+
+@section Scripts {
+    <script>console.log("my js script")</script>
+}
+
+@section LinkSection {
+    <style>
+        h1 { color : red; }
+
+    </style>
+}
+
