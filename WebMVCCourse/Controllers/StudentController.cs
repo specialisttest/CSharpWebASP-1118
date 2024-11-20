@@ -9,8 +9,14 @@ namespace WebMVCCourse.Controllers
     public class StudentController : Controller
     {
         // GET: StudentController
+        
+        [Route("")]
+        [Route("index")]
         public ActionResult Index()
         {
+            /*string message = this.HttpContext.Session.GetString("message");
+            this.ViewBag.message = message;
+            if (!string.IsNullOrEmpty(message)) this.HttpContext.Session.Remove("message");*/ 
             return View(Student.All);
         }
 
@@ -35,6 +41,7 @@ namespace WebMVCCourse.Controllers
         }
 
         // GET: Student/Details/5
+        [Route("details/{id:int}")]
         public ActionResult Details(int id)
         {
             var student = Student.All.Where(s=>s.Id == id).SingleOrDefault();
@@ -44,6 +51,7 @@ namespace WebMVCCourse.Controllers
 
         // GET: Student/Create
         [HttpGet]
+        [Route("create")]
         public ActionResult Create()
         {
             return View();
@@ -59,6 +67,7 @@ namespace WebMVCCourse.Controllers
 
         // POST: StudentController/Create
         [HttpPost]
+        [Route("create")]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Student student)
         {
@@ -66,6 +75,10 @@ namespace WebMVCCourse.Controllers
             try
             {
                 Student.All.Add(student);
+                //string message = $"New Student added: {student.Name}";
+                //this.ViewBag.message = message;
+                //this.HttpContext.Session.SetString("message", message);
+                this.TempData["message"] = $"New Student added: {student.Name}";
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -75,18 +88,26 @@ namespace WebMVCCourse.Controllers
         }
 
         // GET: StudentController/Edit/5
+        [Route("edit/{id:int}")]
         public ActionResult Edit(int id)
         {
-            return View();
+            var student = Student.All.Where(s => s.Id == id).SingleOrDefault();
+            if (student == null) return NotFound();
+            return View(student);
         }
 
         // POST: StudentController/Edit/5
         [HttpPost]
+        [Route("edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Student student)
         {
             try
             {
+                var oldStudent = Student.All.Where(s => s.Id == id).SingleOrDefault();
+                if (oldStudent == null) return NotFound();
+                oldStudent.Name = student.Name;
+                oldStudent.Age  = student.Age;
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -96,6 +117,7 @@ namespace WebMVCCourse.Controllers
         }
 
         // GET: StudentController/Delete/5
+        [Route("delete/{id:int}")]
         public ActionResult Delete(int id)
         {
             return View();
@@ -103,6 +125,7 @@ namespace WebMVCCourse.Controllers
 
         // POST: StudentController/Delete/5
         [HttpPost]
+        [Route("delete/{id:int}")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {

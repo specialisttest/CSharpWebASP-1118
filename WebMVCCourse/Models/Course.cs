@@ -1,6 +1,9 @@
-﻿namespace WebMVCCourse.Models
+﻿using System.ComponentModel.DataAnnotations;
+using WebMVCCourse.Attributes;
+
+namespace WebMVCCourse.Models
 {
-    public class Course
+    public class Course : IValidatableObject
     {
         public static IList<Course> All { get; set; }
 
@@ -17,6 +20,9 @@
 
         }
 
+        // [CustomValidationAttribute]
+        public Course() { }
+
         public Course(int id, string title, int duration)
         {
             Id = id;
@@ -25,7 +31,31 @@
         }
 
         public int Id { get; set; }
-        public string Title { get; set; }
+
+        //[RegularExpression(pattern: "")]
+        //[Compare(otherProperty:"confirm")]
+        [Required(ErrorMessage = "Title should not be empty")]
+        [StringLength(maximumLength:64, MinimumLength = 4, ErrorMessage = "Title length should be >= 4")]
+        [FirstCharUpperCase(ErrorMessage = "First char of title should in upper case")]
+        public string? Title { get; set; }
+
+        [Required(ErrorMessage = "Durartion is empty")]
+        [Range(8,48, ErrorMessage = "Course duration should in [8, 48]")]
+        
         public int Duration { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Id < 0)
+                yield return new ValidationResult("id < 0");
+            if (Duration % 8 != 0)
+                yield return new ValidationResult("duration % 8 != 0 invalid");
+        }
+
+        //[Phone]
+        //[CreditCard]
+        //[Url]
+        //[EmailAddress]
+        //public string Phone { get; set; }
     }
 }
