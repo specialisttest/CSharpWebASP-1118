@@ -104,6 +104,8 @@ namespace WebMVCCourse.Controllers
         {
             try
             {
+                //dao.Save(student);
+                
                 var oldStudent = Student.All.Where(s => s.Id == id).SingleOrDefault();
                 if (oldStudent == null) return NotFound();
                 oldStudent.Name = student.Name;

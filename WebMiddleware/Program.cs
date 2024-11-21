@@ -1,9 +1,12 @@
 using WebMiddleware;
+using WebMiddleware.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Конфигурируем веб-сервер и сервисы
-
+//builder.Services.AddScoped<ICounter,CounterImpl>();
+builder.Services.AddSingleton<ICounter, CounterImpl>();
+//builder.Services.AddTransient<ICounter, CounterImpl>();
 
 var app = builder.Build();
 
@@ -48,14 +51,22 @@ app.Map("/test", app2 =>
 app.Use(async (context, next) =>
 {
     context.Response.ContentType = "text/html";
+    //var counter = context.RequestServices.GetRequiredService<ICounter>();
+    //counter.Increment();
     await next(); //next.Invoke()
 
 });
 
 app.Use(async (context, next) =>
 {
+
     if (context.Request.Method == HttpMethods.Get)
+    {
+        //var counterSrv = app.Services.GetRequiredService<ICounter>(); // only Singleton or Transient
+        var counter = context.RequestServices.GetRequiredService<ICounter>(); // Scoped
+        counter.Increment();
         await context.Response.WriteAsync("Start First Middleware<br>");
+    }     
     //else
         await next();
     await context.Response.WriteAsync("End First Middleware<br>");

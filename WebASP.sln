@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCCourse", "WebMVCCours
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab4.StudentList", "lab4.StudentList\lab4.StudentList.csproj", "{4748AA13-B5A9-4B64-8B4A-21290CB3F664}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab6.1.HelloSrv", "Lab6.1.HelloSrv\Lab6.1.HelloSrv.csproj", "{6F33F272-3A0A-40B6-928E-140AE31F8B9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCCourseDaoService", "WebMVCCourseDaoService\WebMVCCourseDaoService.csproj", "{6FDBEE96-70C7-4E2D-8444-72C376E32304}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{4748AA13-B5A9-4B64-8B4A-21290CB3F664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4748AA13-B5A9-4B64-8B4A-21290CB3F664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4748AA13-B5A9-4B64-8B4A-21290CB3F664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F33F272-3A0A-40B6-928E-140AE31F8B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F33F272-3A0A-40B6-928E-140AE31F8B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F33F272-3A0A-40B6-928E-140AE31F8B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F33F272-3A0A-40B6-928E-140AE31F8B9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FDBEE96-70C7-4E2D-8444-72C376E32304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FDBEE96-70C7-4E2D-8444-72C376E32304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FDBEE96-70C7-4E2D-8444-72C376E32304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FDBEE96-70C7-4E2D-8444-72C376E32304}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
