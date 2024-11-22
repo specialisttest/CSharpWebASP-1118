@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using WebEFC.Models;
 
 namespace WebEFC.Controllers
@@ -12,16 +15,22 @@ namespace WebEFC.Controllers
     public class CourseController : Controller
     {
         private readonly ApplicationContext _context;
+        private readonly IMemoryCache cache;
 
-        public CourseController(ApplicationContext context)
+        public CourseController(ApplicationContext context, IMemoryCache cache
+            /*, IDistributedCache dcache*/)
         {
             _context = context;
+            this.cache = cache;
+            
         }
 
         // GET: Course
-        public async Task<IActionResult> Index()
+        [OutputCache(Duration = 20, NoStore =false)]
+        public IActionResult Index()
         {
-            return View(await _context.Courses.ToListAsync());
+            Console.WriteLine($"Course Index");
+            return View(_context.Courses.ToList());
         }
 
         // GET: Course/Details/5
@@ -32,12 +41,18 @@ namespace WebEFC.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (course == null)
+            Course course;
+            if (!cache.TryGetValue(id, out course))
             {
-                return NotFound();
+                course = await _context.Courses
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (course == null) return NotFound();
+                Console.WriteLine($"Course {course.Id} loaded from database");
+                cache.Set(course.Id, course,
+                    new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(1)));
             }
+            else
+                Console.WriteLine($"Course {course.Id} get from cache");
 
             return View(course);
         }

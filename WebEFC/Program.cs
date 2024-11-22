@@ -1,3 +1,5 @@
+using Microsoft.Extensions.ObjectPool;
+using System.Text;
 using WebEFC.Models;
 
 namespace WebEFC
@@ -13,6 +15,22 @@ namespace WebEFC
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddMemoryCache();
+
+            builder.Services.AddOutputCache();
+
+            builder.Services.AddSingleton<ObjectPool<StringBuilder>>(serviceProvider =>
+            {
+                var provider =serviceProvider.GetService<ObjectPoolProvider>();
+                var policy = new StringBuilderPooledObjectPolicy();
+                Console.WriteLine(policy.InitialCapacity);
+                Console.WriteLine(policy.MaximumRetainedCapacity);
+                return provider.Create(policy);
+            });
+
+            //builder.Services.AddDistributedMemoryCache();
+
             builder.Services.AddSqlServer<ApplicationContext>(
                 config.GetConnectionString("DefaultConnection"));
             
@@ -25,7 +43,12 @@ namespace WebEFC
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseOutputCache();
+
             app.UseRouting();
+
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
 

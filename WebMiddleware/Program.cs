@@ -3,6 +3,11 @@ using WebMiddleware.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+/*builder.WebHost.UseKestrel(options =>
+{
+    //options.
+});*/
+
 // Конфигурируем веб-сервер и сервисы
 //builder.Services.AddScoped<ICounter,CounterImpl>();
 builder.Services.AddSingleton<ICounter, CounterImpl>();
