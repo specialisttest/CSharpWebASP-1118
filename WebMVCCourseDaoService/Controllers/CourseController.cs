@@ -20,6 +20,12 @@ namespace WebMVCCourseDaoService.Controllers
             return View(courseDao.Get());
         }
 
+        [Route("search/{search:minlength(3)}")]
+        public IActionResult Search(string search)
+        {
+            return View("Index", courseDao.Get().Where(c => c.Title.Contains(search, StringComparison.OrdinalIgnoreCase)));
+        }
+
         // GET: CourseController/Details/5
         public ActionResult Details(int id)
         {

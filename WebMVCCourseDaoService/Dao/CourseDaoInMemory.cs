@@ -13,6 +13,8 @@ namespace WebMVCCourseDaoService.Dao
                 new Course(6, "Git",16)
             };
 
+        IEnumerable<Course> ICourseDao.All => Get();
+
         public Course Add(Course course)
         {
             course.Id = All.Select(x => x.Id).Max() + 1;

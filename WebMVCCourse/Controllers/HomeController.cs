@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using WebMVCCourse.Filters;
 using WebMVCCourse.Models;
 
 namespace WebMVCCourse.Controllers
 {
+    [TypeFilter(typeof(ExFilter))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -23,6 +25,7 @@ namespace WebMVCCourse.Controllers
 
         public IActionResult Privacy()
         {
+            throw new Exception("My error");
             return View();
         }
 
@@ -35,6 +38,12 @@ namespace WebMVCCourse.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult ErrorEx(int statuscode)
+        {
+            ViewBag.StatusCode = statuscode;
+            return View();
         }
     }
 }

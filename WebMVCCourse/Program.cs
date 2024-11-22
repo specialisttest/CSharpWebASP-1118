@@ -16,11 +16,20 @@ builder.Services.AddControllersWithViews( options=>options.MaxModelValidationErr
 
 var app = builder.Build();
 
+
+// ASPNETCORE_ENVIRONMENT
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+// by default
+//else
+//    app.UseDeveloperExceptionPage();
+//app.UseStatusCodePages();
+//app.UseStatusCodePagesWithReExecute("Home/ErrorEx?statuscode={0}")
+
+
 app.UseRouting();
 
 app.UseAuthorization();
